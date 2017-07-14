@@ -37,29 +37,29 @@ FusionEKF::FusionEKF() {
     * Set the process and measurement noises
   */
    //create a 4D state vector, we don't know yet the values of the x state
-	VectorXd x = VectorXd(4);
+   VectorXd x = VectorXd(4);
 
-	//state covariance matrix P
-	MatrixXd P = MatrixXd(4, 4);
-	P << 1, 0, 0, 0,
-          0, 1, 0, 0,
-          0, 0, 1000, 0,
-          0, 0, 0, 1000;
-	
-	//measurement matrix
-	H_laser_ << 1, 0, 0, 0,
-			  0, 1, 0, 0;
+   //state covariance matrix P
+   MatrixXd P = MatrixXd(4, 4);
+   P << 1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1000, 0,
+        0, 0, 0, 1000;
+
+   //measurement matrix
+   H_laser_ << 1, 0, 0, 0,
+               0, 1, 0, 0;
 
     Hj_ << 1, 0, 0, 0,
 		   0, 1, 0, 0,
            0, 0, 1, 0;
 
-	//the initial transition matrix F_
-	MatrixXd F = MatrixXd(4, 4);
-	F << 1, 0, 1, 0,
-			  0, 1, 0, 1,
-			  0, 0, 1, 0,
-			  0, 0, 0, 1;
+    //the initial transition matrix F_
+    MatrixXd F = MatrixXd(4, 4); 
+    F << 1, 0, 1, 0,
+	0, 1, 0, 1,
+	0, 0, 1, 0,
+	0, 0, 0, 1;
     
     MatrixXd Q = MatrixXd::Identity(4, 4);
     ekf_.Init(x, P, F, H_laser_, R_laser_, Q);
@@ -159,9 +159,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       ekf_.UpdateEKF(measurement_pack.raw_measurements_); 
   } else {
     // Laser updates
-//      ekf_.H_ = H_laser_;
- //     ekf_.R_ = R_laser_;
-  //    ekf_.Update(measurement_pack.raw_measurements_);
+      ekf_.H_ = H_laser_;
+      ekf_.R_ = R_laser_;
+      ekf_.Update(measurement_pack.raw_measurements_);
   }
 
   // print the output
