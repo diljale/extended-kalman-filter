@@ -1,3 +1,4 @@
+#include <iostream>
 #include "kalman_filter.h"
 #include "tools.h"
 
@@ -59,7 +60,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	//pre-compute a set of terms to avoid repeated calculation
 	float c1 = px*px+py*py;
 	float c2 = sqrt(c1);
-    float c3 = atan2(py / px);
+    float c3 = atan2(py , px);
     if(c3 < -pi)
     {
         c3 += 2 * pi;
@@ -71,7 +72,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     
     //check division by zero
 	if(fabs(c1) < 0.0001){
-		cout << "UpdateEKF () - Error - Division by Zero" << endl;
+		std::cout << "UpdateEKF () - Error - Division by Zero" << std::endl;
 		return ;
 	}
     
