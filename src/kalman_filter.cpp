@@ -68,14 +68,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	return ;
     }
   
-    //nomalize phi
-    VectorXd z_normalized = z;
-    z_normalized[1] = atan2(sin(z[1]), cos(z[1]));
-    if (z[1] > pi)
-	z_normalized[1] = z[1] - 2 * pi;
-    else if (z[1] < -pi)
-    	z_normalized[1] = z[1] + 2 * pi;
-	
     hx(0) = c2;
     hx(1) = c3;
     hx(2) = (px * vx + py * vy) / c2;
@@ -89,8 +81,5 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     MatrixXd I = MatrixXd::Identity(x_.size(), x_.size());
     //new state
     x_ = x_ + (K * y);
-    P_ = (I - K * H_) * P_;
-	
-	std::cout << c3 << " " << y[1] << std::endl;
-    
+    P_ = (I - K * H_) * P_;    
 }
