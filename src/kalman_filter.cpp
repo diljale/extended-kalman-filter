@@ -71,6 +71,11 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     //nomalize phi
     VectorXd z_normalized = z;
     z_normalized[1] = atan2(sin(z[1]), cos(z[1]));
+    if (z[1] > pi)
+	z_normalized[1] = z[1] - 2 * pi;
+    else if (z[1] < -pi)
+    	z_normalized[1] = z[1] + 2 * pi;
+	
     std::cout << c3 << " " << z_normalized[1] << std::endl;
     hx(0) = c2;
     hx(1) = c3;
