@@ -62,13 +62,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     float c2 = sqrt(c1);
     float sinPhi = sin(py / c2);
     float cosPhi = cos(px / c2);
-    float c3 = atan2(sinPhi , cosPhi);
+    float c3 = atan2(py , px);
        
     //check division by zero
-	if(fabs(c1) < 0.0001){
-		std::cout << "UpdateEKF () - Error - Division by Zero" << std::endl;
-		return ;
-	}
+    if(fabs(c1) < 0.0001){
+        std::cout << "UpdateEKF () - Error - Division by Zero" << std::endl;
+	return ;
+    }
     
     hx(0) = c2;
     hx(1) = c3;
