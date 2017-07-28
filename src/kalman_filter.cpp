@@ -60,8 +60,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     //pre-compute a set of terms to avoid repeated calculation
     float c1 = px*px+py*py; 
     float c2 = sqrt(c1);
-    float sinPhi = sin(py / c2);
-    float cosPhi = cos(px / c2);
     float c3 = atan2(py , px);
        
     //check division by zero
@@ -69,11 +67,14 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
         std::cout << "UpdateEKF () - Error - Division by Zero" << std::endl;
 	return ;
     }
-    
+  
+    //nomalize phi
+    z_normalized = z;
+    z_normalized[1] = atan2(sin(z[1], cos(z[1]));
     hx(0) = c2;
     hx(1) = c3;
     hx(2) = (px * vx + py * vy) / c2;
-    VectorXd y = z - hx;
+    VectorXd y = z_normalized - hx;
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
     MatrixXd Si = S.inverse();
