@@ -69,7 +69,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     }
   
     //nomalize phi
-    z_normalized = z;
+    VectorXd z_normalized = z;
     z_normalized[1] = atan2(sin(z[1]), cos(z[1]));
     hx(0) = c2;
     hx(1) = c3;
