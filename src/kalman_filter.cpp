@@ -76,11 +76,12 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     else if (z[1] < -pi)
     	z_normalized[1] = z[1] + 2 * pi;
 	
-    std::cout << c3 << " " << z_normalized[1] << std::endl;
     hx(0) = c2;
     hx(1) = c3;
     hx(2) = (px * vx + py * vy) / c2;
-    VectorXd y = z_normalized - hx;
+    VectorXd y = z - hx;
+    y[1] = atan2(sin(y[1]), cos(y[1]));
+	
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
     MatrixXd Si = S.inverse();
@@ -89,4 +90,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     //new state
     x_ = x_ + (K * y);
     P_ = (I - K * H_) * P_;
+	
+	std::cout << c3 << " " << y[1] << std::endl;
+    
 }
