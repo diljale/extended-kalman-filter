@@ -53,23 +53,17 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     const double pi = 3.14159;
     VectorXd hx = VectorXd(3);
     float px = x_(0);
-	float py = x_(1);
-	float vx = x_(2);
-	float vy = x_(3);
+    float py = x_(1);
+    float vx = x_(2);
+    float vy = x_(3);
 
-	//pre-compute a set of terms to avoid repeated calculation
-	float c1 = px*px+py*py;
-	float c2 = sqrt(c1);
-    float c3 = atan2(py , px);
-    if(c3 < -pi)
-    {
-        c3 += 2 * pi;
-    }
-    else if( c3 > pi)
-    {
-        c3 -= 2 * pi;
-    }
-    
+    //pre-compute a set of terms to avoid repeated calculation
+    float c1 = px*px+py*py; 
+    float c2 = sqrt(c1);
+    float sinPhi = sin(py / c2);
+    float cosPhi = cos(px / c2);
+    float c3 = atan2(sinPhi , cosPhi);
+       
     //check division by zero
 	if(fabs(c1) < 0.0001){
 		std::cout << "UpdateEKF () - Error - Division by Zero" << std::endl;
